@@ -37,31 +37,6 @@
     return cache[string] = parts;
   }
 
-  function parseString(string, precision) {
-    var a = precision[0], b = precision[1];
-    return a ?
-            b ?
-              string.substr(a,b) :
-              string.substring(0,a) :
-            string;
-  }
-
-  function parseNum(num, precision) {
-    return num.toFixed(0);
-  }
-
-  function parseFloat(num, precision) {
-    var a = parseInt(precision[0],10), b = parseInt(precision[1],10);
-    if (b >= 0) {
-      num = num.toFixed(b);
-    }
-    var rv = num.toString();
-    if (a !== 0 && num < 1 && num > -1) {
-      rv = rv.replace(/0\./,'.');
-    }
-    return rv;
-  }
-
   if (global.ENV === 'test') global.PF = parseFormat;
 
   String.prototype.format = function (/* args... */) {
@@ -72,13 +47,27 @@
       var part = parts[i],
         head = string.substring(0,lastIndex + part.o),
         tail = string.substring(lastIndex + part.o + part.m.length),
-        replacement = '';
+        replacement = '',
+        val = args[part.i],
+        major = part.h && parseInt(part.h[0],10), minor = part.h && parseInt(part.h[1],10);
       switch (part.type) {
         case '%': replacement = '%'; break;
-        case 's': replacement = parseString(args[part.i], part.h); break;
-        case 'f': replacement = parseFloat(args[part.i], part.h); break;
+        case 's':
+          replacement = major ?
+                 minor ?
+                 val.substr(major,minor) :
+                 val.substring(0,major) :
+                 val;
+          break;
+        case 'f':
+          if (minor >= 0) val = val.toFixed(minor);
+          replacement = val.toString();
+          if (major !== 0 && val < 1 && val > -1) replacement = replacement.replace(/0\./,'.');
+          break;
         case 'd':
-        case 'i': replacement = parseNum(args[part.i], part.h); break;
+        case 'i':
+          replacement = val.toFixed(0);
+          break;
       }
       lastIndex += part.o + replacement.length;
       string = head + replacement + tail;
