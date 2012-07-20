@@ -2,10 +2,11 @@
 ## JavaScript sprintf/console.log()/String.Format() inspired formatting library
 ## 938 bytes minified, 556 bytes gzipped.
 
-String-format is a micro library that provides a very simple but very useful format() function to your string literals
-allowing you to access sprintf like formatting on the fly, e.g.
+String-format is a micro library that provides a very simple but very useful format() method to your string literals allowing you to access sprintf like formatting on the fly, e.g.
 
-`'This is a string %s'.Format('literal') // 'This is a string literal'`
+```js
+'This is a string %s'.format('literal') // 'This is a string literal'
+```
 
 This product is the evolution of a tool that I've copied from project to project in one form or another over several years. In
 true coder form, it's updated, unit tested, and documented on github right now because I'm procrastinating another project.
@@ -24,7 +25,7 @@ true coder form, it's updated, unit tested, and documented on github right now b
 
 ## Examples
 
-```
+```javascript
 'Github is %s'.format('awesome');                  // "Github is awesome"
 'One answer may be %i'.format(42);                 // "One answer may be 42"
 'Another answer may be %.5f'.format(Math.PI);      // "Another answer may be 3.14159"
@@ -34,7 +35,7 @@ true coder form, it's updated, unit tested, and documented on github right now b
 
 The format() method is on every string, not just literal strings.
 
-```
+```javascript
 var header = 'Welcome, %s';
 header.format("Bob")          // "Welcome, Bob"
 ```
