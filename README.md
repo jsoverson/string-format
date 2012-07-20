@@ -1,6 +1,6 @@
 # [String.format()]()
 ## JavaScript sprintf/console.log()/String.Format() inspired formatting library
-## 938 bytes minified, 556 bytes gzipped.
+## 997 bytes minified, 576 bytes gzipped.
 
 String-format is a micro library that provides a very simple but very useful format() method to your string literals allowing you to access sprintf like formatting on the fly, e.g.
 
@@ -20,7 +20,9 @@ true coder form, it's updated, unit tested, and documented on github right now b
   - `%0f` : floating point with leading zero
   - `%.Df` : fixed to D decimal places
   - `%0.Df` : fixed to D decimal places with leading zero
+  - `%,Df` : Using a comma will add a comma separator every 3 digits
 - `%d` or `%i` : substitute an integer (zero decimal places)
+  - `%,d` : add comma separator every 3 digits
 - `%%` : literal % sign
 
 ## Examples
@@ -31,6 +33,8 @@ true coder form, it's updated, unit tested, and documented on github right now b
 'Another answer may be %.5f'.format(Math.PI);      // "Another answer may be 3.14159"
 '%.5f is not equal to %.5f'.format(22/7, Math.PI); // "3.14286 is not equal to 3.14159"
 'PI minus 3 is %0.5f'.format(Math.PI - 3);         // "PI minus 3 is 0.14159"
+'%,d is a really big number'.format(299792458);    // "299,792,458 is a really big number"
+'%0,2f is a smaller number'.format(12021.12);      // "12,021.12 is a smaller number"
 ```
 
 The format() method is on every string, not just literal strings.
