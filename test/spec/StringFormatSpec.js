@@ -123,6 +123,10 @@ describe("String format", function() {
     expect('%.5f'.format(1234.1234)).toEqual('1234.12340');
   });
 
+  it("Should fail gracefully on unmatched args", function() {
+    expect('%i%0.2f%s%i'.format()).toEqual('00.000');
+  });
+
   it("Should format int values", function() {
     expect('%i'.format(1234)).toEqual('1234');
     expect('%i'.format(1234.1234)).toEqual('1234');
