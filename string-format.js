@@ -14,25 +14,26 @@
   function parseFormat(string) {
     if (cache[string]) return cache[string];
     var parts = [],
-        regex = /(%%)|(^%|(?=.)%)(?:(\d+)?(?:\.)?(\d+)?)?([a-zA-Z])/,
+        regex = /(%%)|(^%|(?=.)%)(?:(\d+)?([.,])?(\d+)?)?([a-zA-Z])/,
         position = 0,
         part, match;
 
-    if (!string.length) return parts;
+    if (!string) return parts;
 
     while (match = regex.exec(string)) {
       part = {
-        match : match[0],
-        idx : match.index
+        m : match[0],
+        mi : match.index
       };
       if (match[0] === "%%") {
-        part.type = '%';
+        part.t = '%';
       } else {
-        part.arg = position++;
-        part.type = match[5];
+        part.i = position++;
+        part.s = match[4];
+        part.t = match[6];
         part.h = [
           (!match[3] && match[3] !== 0) ? undefined : parseInt(match[3],10),
-          (!match[4] && match[4] !== 0) ? undefined : parseInt(match[4],10)
+          (!match[5] && match[5] !== 0) ? undefined : parseInt(match[5],10)
         ];
       }
 
@@ -46,6 +47,13 @@
 
   if (global.ENV === 'test') global.PF = parseFormat;
 
+  // Nice regex from  http://stackoverflow.com/questions/2901102/how-to-print-number-with-commas-as-thousands-separators-in-javascript
+  function addSep(numberString) {
+    var parts = numberString.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join('.');
+  }
+
   String.prototype.format = function (/* args... */) {
     var string = this.toString(),
       args = arguments,
@@ -53,36 +61,36 @@
       lastIndex = 0;
     for (var i = 0; i < parts.length; i++) {
       var part = parts[i],
-        head = string.substring(0,lastIndex + part.idx),
-        tail = string.substring(lastIndex + part.idx + part.match.length),
+        head = string.substring(0,lastIndex + part.mi),
+        tail = string.substring(lastIndex + part.mi + part.m.length),
         replacement = '',
-        val = args[part.arg],
-        major = part.h && parseInt(part.h[0],10), minor = part.h && parseInt(part.h[1],10);
-      switch (part.type) {
+        val = args[part.i];
+      switch (part.t) {
         case '%':
           replacement = '%';
           break;
         case 's':
           val = val || '';
-          replacement = major ?
-                         minor ?
-                           val.substr(major,minor) :
-                           val.substring(0,major) :
+          replacement = part.h[0] ?
+                        part.h[1] ?
+                           val.substr(part.h[0],part.h[1]) :
+                           val.substring(0,part.h[0]) :
                          val;
           break;
         case 'f':
           val = val || 0;
-          if (minor >= 0) val = val.toFixed(minor);
-          replacement = val.toString();
+          replacement = (part.h[1] >= 0) ? val.toFixed(part.h[1]) : val.toString();
 
           // Remove the 0 prefix if we didn't ask for it
-          if (major !== 0 && val < 1 && val > -1) replacement = replacement.replace(/0\./,'.');
+          if (part.h[0] !== 0 && val < 1 && val > -1) replacement = replacement.replace(/0\./,'.');
+          if (part.s === ',') replacement = addSep(replacement);
           break;
         case 'd':
         case 'i':
-          replacement = val ? val.toFixed(0) : 0;
+          replacement = val ? val.toFixed(0) : '0';
+          if (part.s === ',') replacement = addSep(replacement);
       }
-      lastIndex += part.idx + replacement.toString().length;
+      lastIndex += part.mi + replacement.length;
       string = head + replacement + tail;
     }
     return string;
