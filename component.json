@@ -1,6 +1,6 @@
 {
   "name": "string-format",
-  "version": "1.0.1",
-  "dependencies": {
-  }
+  "main": "string-format.js",
+  "version": "1.0.1"
 }
+
