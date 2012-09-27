@@ -1,0 +1,25 @@
+{
+  "name"            : "string-format",
+  "description"     : "",
+  "version"         : "1.0.0",
+  "homepage"        : "https://github.com/jsoverson/string-format",
+  "author"          : {
+    "name"  : "Jarrod Overson",
+    "email" : "jsoverson@gmail.com",
+    "url"   : "http://jarrodoverson.com/"
+  },
+  "repository"      : {
+    "type" : "git",
+    "url"  : "git://github.com/jsoverson/string-format.git"
+  },
+  "scripts"         : {
+    "test" : "./node_modules/grunt/bin/grunt jasmine"
+  },
+  "bugs"            : {
+    "url" : "https://github.com/jsoverson/string-format/issues"
+  },
+  "devDependencies" : {
+    "grunt-jasmine-runner" : "latest",
+    "grunt"         : "~0.4.0a"
+  }
+}
