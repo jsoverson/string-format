@@ -1,6 +1,8 @@
 # [String.format()]()
 ## JavaScript sprintf/console.log()/String.Format() inspired formatting library
 
+[![Build Status](https://secure.travis-ci.org/jsoverson/string-format.png)](http://travis-ci.org/jsoverson/string-format)
+
 String-format is a micro library that provides a very simple but very useful format() method to your string literals allowing you to access sprintf like formatting on the fly, e.g.
 
 ```js
