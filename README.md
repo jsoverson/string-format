@@ -1,6 +1,5 @@
 # [String.format()]()
 ## JavaScript sprintf/console.log()/String.Format() inspired formatting library
-## 997 bytes minified, 576 bytes gzipped.
 
 String-format is a micro library that provides a very simple but very useful format() method to your string literals allowing you to access sprintf like formatting on the fly, e.g.
 
