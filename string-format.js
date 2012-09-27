@@ -6,7 +6,7 @@
 
 // Code deliberately terse for size reasons. I apologize (a little).
 
-(function(global,undefined) {
+String.prototype.format = (function(global,undefined) {
   "use strict";
 
   var cache = {};
@@ -45,8 +45,6 @@
     return cache[string] = parts;
   }
 
-  if (global.ENV === 'test') global.PF = parseFormat;
-
   // Nice regex from  http://stackoverflow.com/questions/2901102/how-to-print-number-with-commas-as-thousands-separators-in-javascript
   function addSep(numberString) {
     var parts = numberString.split('.');
@@ -54,9 +52,9 @@
     return parts.join('.');
   }
 
-  String.prototype.format = function (/* args... */) {
-    var string = this.toString(),
-      args = arguments,
+  function format(/* args... */) {
+    var args = Array.prototype.slice.call(arguments),
+      string = typeof this === 'string' ? this : args.shift(),
       parts = parseFormat(string),
       lastIndex = 0;
     for (var i = 0; i < parts.length; i++) {
@@ -95,4 +93,9 @@
     }
     return string;
   };
+
+  format.parse = parseFormat;
+
+  return format;
+
 })(this);
